@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic-IP // NET_SCAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="grid-overlay"></div>
+        <div class="scan-line"></div>
+    </div>
+
+    <main class="dashboard">
+        <header class="header">
+            <h1 class="logo">
+                <span class="glitch" data-text="MAGIC-IP">MAGIC-IP</span>
+                <span class="version">v1.0.0</span>
+            </h1>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text" id="connectionStatus">CONN_WAIT</span>
+            </div>
+        </header>
+
+        <section class="control-panel panel">
+            <div class="panel-header">SYS_CONFIG</div>
+            <div class="controls">
+                <div class="input-group">
+                    <label>CONCURRENCY</label>
+                    <input type="number" id="concurrency" value="20" min="1" max="100">
+                </div>
+                <div class="input-group">
+                    <label>SPL/CIDR</label>
+                    <input type="number" id="countPerCidr" value="15" min="1" max="500">
+                </div>
+                <div class="input-group">
+                    <label>T_OUT (ms)</label>
+                    <input type="number" id="timeout" value="200" min="50" max="1000">
+                </div>
+                <div class="input-group">
+                    <label>TARGET COLO</label>
+                    <select id="targetColo">
+                        <option value="Any" selected>ANY (不限)</option>
+                        <option value="ICN">ICN (韩国首尔)</option>
+                        <option value="NRT">NRT (日本东京)</option>
+                        <option value="KIX">KIX (日本大阪)</option>
+                        <option value="HKG">HKG (中国香港)</option>
+                        <option value="SIN">SIN (新加坡)</option>
+                        <option value="TPE">TPE (中国台北)</option>
+                        <option value="LAX">LAX (美国洛杉矶)</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button id="startBtn" class="btn btn-primary">EXECUTE</button>
+                    <button id="stopBtn" class="btn btn-danger" disabled>ABORT</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="progress-panel panel">
+            <div class="panel-header">SCAN_PROCESS</div>
+            <div class="progress-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="progress-stats">
+                    <span id="progressText">0 / 0</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-panel panel">
+            <div class="panel-header" style="display: flex; justify-content: space-between;">
+                <span>NET_NODES_FOUND</span>
+                <span id="resultCount">0</span>
+            </div>
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>IP_ADDR</th>
+                            <th>LATENCY</th>
+                            <th>COLO</th>
+                            <th>CIDR_BLOCK</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <!-- Results injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

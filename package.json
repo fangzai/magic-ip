@@ -1,0 +1,32 @@
+{
+  "name": "magic-ip",
+  "version": "1.0.0",
+  "description": "Magic-IP: Cloudflare TCP IP optimizer with real-time dashboard",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron-start": "electron .",
+    "build": "npx electron-packager . Magic-IP --platform=win32 --arch=x64 --out=release-app --overwrite --tmpdir=./build-tmp"
+  },
+  "build": {
+    "appId": "com.geoai.magic-ip",
+    "productName": "Magic-IP",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "dir"
+    }
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ip": "^1.1.9",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "^19.1.0",
+    "electron": "^29.1.5",
+    "electron-builder": "^24.13.3",
+    "nodemon": "^3.1.0"
+  }
+}
