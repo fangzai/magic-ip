@@ -23,27 +23,28 @@ function checkColo(ipAddr) {
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
           const match = data.match(/colo=([A-Z]+)/);
-          resolve({ip: ipAddr, colo: match ? match[1] : 'UNK'});
+          if (!match) {
+              console.log(`IP ${ipAddr} returned data length: ${data.length}, start: ${data.substring(0, 100)}`);
+          }
+          resolve({ip: ipAddr, colo: match ? match[1] : 'UNK', statusCode: res.statusCode});
         });
       });
-      req.on('error', () => resolve({ip: ipAddr, colo: 'ERR'}));
+      req.on('error', (err) => resolve({ip: ipAddr, colo: 'ERR', error: err.message}));
       req.on('timeout', () => { req.destroy(); resolve({ip: ipAddr, colo: 'T/O'}); });
     });
 }
 
 async function run() {
-    console.log('Testing 200 random IPs for Colo distribution (ignoring latency limits)...');
+    console.log('Testing 20 random IPs for detailed colo check...');
     const tests = [];
-    for(let i=0; i<200; i++) {
+    for(let i=0; i<20; i++) {
         const cidr = cloudflareIps[Math.floor(Math.random() * cloudflareIps.length)];
         const testIp = getRandomIP(cidr);
         tests.push(checkColo(testIp));
     }
     const results = await Promise.all(tests);
-    const counts = {};
     for (const r of results) {
-        counts[r.colo] = (counts[r.colo] || 0) + 1;
+        console.log(`IP: ${r.ip}, Colo: ${r.colo}, Status: ${r.statusCode || 'N/A'}, Error: ${r.error || ''}`);
     }
-    console.log('Distribution:', counts);
 }
 run();
